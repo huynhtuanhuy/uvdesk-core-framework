@@ -780,8 +780,9 @@ class UserService
         $query = "select * from uv_user_support_groups where userInstanceId =".$userId;
         $connection = $this->entityManager->getConnection();
         $stmt = $connection->prepare($query);
-        $stmt->execute();
-        $result = $stmt->fetchAll();
+        // $stmt->execute();
+        // $result = $stmt->fetchAll();
+        $result = $stmt->executeQuery()->fetchAllAssociative();
 
         foreach ($result as $row) {
             array_push($groupIds, $row['supportGroupId']);
@@ -790,8 +791,9 @@ class UserService
         // Get all the saved reply's ids that is associated with the user's group(s).
         $query = "select * from uv_saved_replies_groups";
         $stmt = $connection->prepare($query);
-        $stmt->execute();
-        $result = $stmt->fetchAll();
+        // $stmt->execute();
+        // $result = $stmt->fetchAll();
+        $result = $stmt->executeQuery()->fetchAllAssociative();
 
         foreach ($result as $row) {
             if (in_array($row['group_id'], $groupIds)) {
@@ -803,8 +805,9 @@ class UserService
         $query = "select * from uv_user_support_teams";
         $connection = $this->entityManager->getConnection();
         $stmt = $connection->prepare($query);
-        $stmt->execute();
-        $result = $stmt->fetchAll();
+        // $stmt->execute();
+        // $result = $stmt->fetchAll();
+        $result = $stmt->executeQuery()->fetchAllAssociative();
 
         foreach($result as $row) {
             if ($row['userInstanceId'] == $userId) {
@@ -814,8 +817,9 @@ class UserService
 
         $query = "select * from uv_saved_replies_teams";
         $stmt = $connection->prepare($query);
-        $stmt->execute();
-        $result = $stmt->fetchAll();
+        // $stmt->execute();
+        // $result = $stmt->fetchAll();
+        $result = $stmt->executeQuery()->fetchAllAssociative();
 
         foreach ($result as $row) {
             if (in_array($row['subgroup_id'], $teamIds)) {
