@@ -34,11 +34,13 @@ class ThreadRepository extends \Doctrine\ORM\EntityRepository
         $queryBuilder = $entityManager->createQueryBuilder()
             ->select('t')
             ->from(Ticket::class, 't')
-            ->where('t.subject LIKE :referenceIds')->setParameter('referenceIds', "%$subject%")
+            // ->where('t.subject LIKE :referenceIds')->setParameter('referenceIds', "%$subject%")
             ->setMaxResults(1);
 
         if (preg_match("/\#\d+/", $subject, $match)) {
             $queryBuilder = $queryBuilder->orWhere('t.id = :ticketId')->setParameter('ticketId', str_ireplace("#", "", $match[0]));
+        } else {
+            return null;
         }
 
         $ticket = $queryBuilder->getQuery()->getOneOrNullResult();
